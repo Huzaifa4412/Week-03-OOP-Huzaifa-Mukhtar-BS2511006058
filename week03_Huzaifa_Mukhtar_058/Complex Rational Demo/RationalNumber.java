@@ -3,7 +3,8 @@ public class RationalNumber {
     private int denominator;
 
     public RationalNumber() {
-        this(0, 1);
+        this.numerator = 0;
+        this.denominator = 1;
     }
 
     public RationalNumber(int numerator, int denominator) {
@@ -16,22 +17,28 @@ public class RationalNumber {
     }
 
     public RationalNumber(RationalNumber other) {
-        this(other.numerator, other.denominator);
+        this.numerator = other.numerator;
+        this.denominator = other.denominator;
     }
 
     private int gcd(int a, int b) {
         a = Math.abs(a);
         b = Math.abs(b);
         while (b != 0) {
-            int r = a % b;
-            a = b;
-            b = r;
+            int temp = b;
+            b = a % b;
+            a = temp;
         }
-        return a == 0 ? 1 : a;
+        return a;
     }
 
-    public int getNumerator() { return numerator; }
-    public int getDenominator() { return denominator; }
+    public int getNumerator() {
+        return numerator;
+    }
+
+    public int getDenominator() {
+        return denominator;
+    }
 
     public void setNumerator(int numerator) {
         this.numerator = numerator;
@@ -51,27 +58,29 @@ public class RationalNumber {
             numerator = -numerator;
             denominator = -denominator;
         }
-        int d = gcd(numerator, denominator);
-        numerator /= d;
-        denominator /= d;
+        int common = gcd(numerator, denominator);
+        numerator = numerator / common;
+        denominator = denominator / common;
     }
 
     public RationalNumber add(RationalNumber other) {
-        return new RationalNumber(
-            numerator * other.denominator + other.numerator * denominator,
-            denominator * other.denominator
-        );
+        int num = (this.numerator * other.denominator) + (other.numerator * this.denominator);
+        int den = this.denominator * other.denominator;
+        return new RationalNumber(num, den);
     }
 
     public RationalNumber subtract(RationalNumber other) {
-        return new RationalNumber(
-            numerator * other.denominator - other.numerator * denominator,
-            denominator * other.denominator
-        );
+        int num = (this.numerator * other.denominator) - (other.numerator * this.denominator);
+        int den = this.denominator * other.denominator;
+        return new RationalNumber(num, den);
     }
 
     @Override
     public String toString() {
-        return denominator == 1 ? String.valueOf(numerator) : numerator + "/" + denominator;
+        if (denominator == 1) {
+            return String.valueOf(numerator);
+        }
+        return numerator + "/" + denominator;
     }
 }
+

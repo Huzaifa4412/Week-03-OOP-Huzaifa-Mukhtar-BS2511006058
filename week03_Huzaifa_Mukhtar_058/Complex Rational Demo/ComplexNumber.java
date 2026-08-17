@@ -3,7 +3,8 @@ public class ComplexNumber {
     private double imaginary;
 
     public ComplexNumber() {
-        this(0, 0);
+        this.real = 0;
+        this.imaginary = 0;
     }
 
     public ComplexNumber(double real, double imaginary) {
@@ -12,7 +13,8 @@ public class ComplexNumber {
     }
 
     public ComplexNumber(ComplexNumber other) {
-        this(other.real, other.imaginary);
+        this.real = other.real;
+        this.imaginary = other.imaginary;
     }
 
     public double getReal() {
@@ -32,23 +34,25 @@ public class ComplexNumber {
     }
 
     public ComplexNumber add(ComplexNumber other) {
-        return new ComplexNumber(real + other.real, imaginary + other.imaginary);
+        return new ComplexNumber(this.real + other.real, this.imaginary + other.imaginary);
     }
 
     public ComplexNumber subtract(ComplexNumber other) {
-        return new ComplexNumber(real - other.real, imaginary - other.imaginary);
+        return new ComplexNumber(this.real - other.real, this.imaginary - other.imaginary);
     }
 
     public ComplexNumber multiply(ComplexNumber other) {
-        double r = real * other.real - imaginary * other.imaginary;
-        double i = real * other.imaginary + imaginary * other.real;
-        return new ComplexNumber(r, i);
+        double realPart = (this.real * other.real) - (this.imaginary * other.imaginary);
+        double imagPart = (this.real * other.imaginary) + (this.imaginary * other.real);
+        return new ComplexNumber(realPart, imagPart);
     }
 
     @Override
     public String toString() {
-        return imaginary >= 0
-                ? real + " + " + imaginary + "i"
-                : real + " - " + Math.abs(imaginary) + "i";
+        if (imaginary >= 0) {
+            return real + " + " + imaginary + "i";
+        } else {
+            return real + " - " + (-imaginary) + "i";
+        }
     }
 }
